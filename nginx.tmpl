@@ -30,23 +30,23 @@ http {
   {{$conf}};
   {{end}}{{end}}
 
-  {{if exists "/services/nginx/http/map"}}{{range gets "/services/nginx/http/map/*"}}
+  {{range gets "/services/nginx/http/map/*"}}
   map {{.Key}} {
     {{.Value}}
   }
-  {{end}}{{end}}
+  {{end}}
 
-  {{if exists "/services/nginx/http/upstream"}}{{range gets "/services/nginx/http/upstream/*"}}
-  upstream  {{.Key}} {
+  {{range gets "/services/nginx/http/upstream/*"}}
+  upstream  {{base .Key}} {
     {{range $url := split .Value ","}}
     server {{$url}} fail_timeout=0;
     {{end}}
   }
-  {{end}}{{end}}
+  {{end}}
 
-  {{if exists "/services/nginx/http/server"}}{{range gets "/services/nginx/http/server/*"}}
+  {{range gets "/services/nginx/http/server/*"}}
   server {
     {{.Value}}
   }
-  {{end}}{{end}}
+  {{end}}
 }
